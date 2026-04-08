@@ -18,20 +18,36 @@ def menu_atendente(servico: ServicoSolicitacoes, atendente: Usuario):
 	while True:
 		titulo("Menu Atendente/Gestor")
 		menu_opcoes([
-			"1. Listar demandas",
-			"2. Atualizar status",
+			"1. Listar todas as demandas",
+			"2. Listar demandas com filtros",
+			"3. Atualizar status",
 			"0. Voltar",
 		])
 		opcao = ler_opcao()
 
 		if opcao == "1":
-			_listar_demandas(servico)
+			_listar_todas_demandas(servico)
 		elif opcao == "2":
+			_listar_demandas(servico)
+		elif opcao == "3":
 			_atualizar_status(servico, atendente)
 		elif opcao == "0":
 			return
 		else:
 			alerta("Opcao invalida.")
+
+
+def _listar_todas_demandas(servico: ServicoSolicitacoes):
+	demandas = servico.listar_demandas()
+	if not demandas:
+		alerta("Nenhuma demanda encontrada.")
+		return
+
+	for d in demandas:
+		print(
+			f"{d.protocolo} | {d.status.value} | {d.prioridade.value} | "
+			f"{d.categoria.value} | {d.localizacao} | prazo: {d.calcular_prazo_alvo()}"
+		)
 
 
 def _listar_demandas(servico: ServicoSolicitacoes):
