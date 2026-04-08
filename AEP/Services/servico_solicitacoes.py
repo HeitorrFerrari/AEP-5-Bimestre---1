@@ -39,15 +39,11 @@ class ServicoSolicitacoes:
 	def listar_demandas(
 		self,
 		prioridade: Optional[Prioridade] = None,
-		bairro: Optional[str] = None,
 		categoria: Optional[TipoCategoria] = None,
 	) -> list[Solicitacao]:
 		demandas = list(self._solicitacoes.values())
 		if prioridade:
 			demandas = [d for d in demandas if d.prioridade == prioridade]
-		if bairro:
-			bairro_normalizado = bairro.strip().lower()
-			demandas = [d for d in demandas if bairro_normalizado in d.localizacao.lower()]
 		if categoria:
 			demandas = [d for d in demandas if d.categoria == categoria]
 

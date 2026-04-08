@@ -36,10 +36,9 @@ def menu_atendente(servico: ServicoSolicitacoes, atendente: Usuario):
 
 def _listar_demandas(servico: ServicoSolicitacoes):
 	prioridade = _filtro_prioridade()
-	bairro = input("Filtro por bairro (opcional): ").strip() or None
 	categoria = _filtro_categoria()
 
-	demandas = servico.listar_demandas(prioridade=prioridade, bairro=bairro, categoria=categoria)
+	demandas = servico.listar_demandas(prioridade=prioridade, categoria=categoria)
 	if not demandas:
 		alerta("Nenhuma demanda encontrada.")
 		return
