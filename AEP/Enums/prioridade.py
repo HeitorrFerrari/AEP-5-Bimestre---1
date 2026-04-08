@@ -1,3 +1,5 @@
+from enum import Enum
+
 class Prioridade(Enum):
 	BAIXA = "Baixa"
 	MEDIA = "Media"
