@@ -19,7 +19,6 @@ class Solicitacao:
 		identificacao: TipoIdentificacao,
 		prioridade: Prioridade,
 		cidadao: Optional[Usuario] = None,
-		anexo: Optional[str] = None,
 		status: StatusSolicitacao = StatusSolicitacao.ABERTO,
 		criado_em: Optional[datetime] = None,
 		justificativa_atraso: Optional[str] = None,
@@ -31,7 +30,6 @@ class Solicitacao:
 		self.identificacao = identificacao
 		self.prioridade = prioridade
 		self.cidadao = cidadao
-		self.anexo = anexo
 		self.status = status
 		self.criado_em = criado_em or datetime.now()
 		self.justificativa_atraso = justificativa_atraso
@@ -40,7 +38,6 @@ class Solicitacao:
 
 		self.descricao = self.descricao.strip()
 		self.localizacao = self.localizacao.strip()
-		self.anexo = self.anexo.strip() if self.anexo else None
 		self._validar_campos_obrigatorios()
 		self._validar_regra_anonimato()
 		self.registrar_log("Solicitacao criada")

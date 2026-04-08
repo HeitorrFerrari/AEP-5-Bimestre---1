@@ -2,11 +2,12 @@ from Models.usuario import Cargo, Usuario
 from Services.servico_solicitacoes import ServicoSolicitacoes
 from UI.menu_atendente import menu_atendente
 from UI.menu_cidadao import menu_cidadao
-from UI.terminal_ui import alerta, habilitar_ansi, ler_opcao, menu_opcoes, titulo
+from UI.terminal_ui import alerta, habilitar_ansi, ler_opcao, menu_opcoes, tela_inicial, titulo
 
 
 def main():
 	habilitar_ansi()
+	tela_inicial()
 	servico = ServicoSolicitacoes()
 	atendente = Usuario(
 		nome="Atendente Padrao",

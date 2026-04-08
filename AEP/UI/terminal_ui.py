@@ -1,12 +1,14 @@
 import ctypes
 import os
 import sys
+from datetime import datetime
 
 
 class Cores:
 	RESET = "\033[0m"
 	BOLD = "\033[1m"
 	CYAN = "\033[36m"
+	BLUE = "\033[34m"
 	GREEN = "\033[32m"
 	YELLOW = "\033[33m"
 	RED = "\033[31m"
@@ -42,6 +44,47 @@ def titulo(texto: str) -> None:
 	print(f"\n{colorir(barra, Cores.GRAY)}")
 	print(colorir(texto.upper(), Cores.BOLD + Cores.CYAN))
 	print(colorir(barra, Cores.GRAY))
+
+
+def limpar_tela() -> None:
+	os.system("cls" if os.name == "nt" else "clear")
+
+
+def _quadro(linhas: list[str], largura: int = 64) -> None:
+	topo = "+" + ("-" * (largura - 2)) + "+"
+	print(colorir(topo, Cores.GRAY))
+	for linha in linhas:
+		conteudo = linha[: largura - 4]
+		print(colorir(f"| {conteudo:<{largura - 4}} |", Cores.GRAY))
+	print(colorir(topo, Cores.GRAY))
+
+
+def tela_inicial() -> None:
+	data_hora = datetime.now().strftime("%d/%m/%Y %H:%M")
+	banner = [
+		" ______  _____   ____   ______  _______ ",
+		"|  ____|/ ____| / __ \ |  ____||__   __|",
+		"| |__  | (___  | |  | || |__      | |   ",
+		"|  __|  \___ \ | |  | ||  __|     | |   ",
+		"| |____ ____) || |__| || |        | |   ",
+		"|______|_____/  \____/ |_|        |_|   ",
+	]
+
+	limpar_tela()
+	print()
+	for linha in banner:
+		print(colorir(linha, Cores.BOLD + Cores.BLUE))
+	print(colorir("  Sistema de Solicitacoes Urbanas", Cores.BOLD + Cores.CYAN))
+	print(colorir("  Atendimento digital da cidade", Cores.GRAY))
+	print()
+	_quadro(
+		[
+			"Bem-vindo(a)!",
+			"Gerencie demandas com rapidez e transparencia.",
+			f"Sessao iniciada em: {data_hora}",
+		],
+	)
+	print()
 
 
 def menu_opcoes(opcoes: list[str]) -> None:

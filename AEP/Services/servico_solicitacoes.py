@@ -19,7 +19,6 @@ class ServicoSolicitacoes:
 		identificacao: TipoIdentificacao,
 		prioridade: Prioridade,
 		cidadao: Optional[Usuario] = None,
-		anexo: Optional[str] = None,
 	) -> Solicitacao:
 		protocolo = gerar_protocolo()
 		solicitacao = Solicitacao(
@@ -30,7 +29,6 @@ class ServicoSolicitacoes:
 			identificacao=identificacao,
 			prioridade=prioridade,
 			cidadao=cidadao,
-			anexo=anexo,
 		)
 		self._solicitacoes[protocolo] = solicitacao
 		return solicitacao

@@ -39,9 +39,8 @@ def _cadastrar_solicitacao(servico: ServicoSolicitacoes):
 	prioridade = _selecionar_enum("Prioridade", list(Prioridade))
 	identificacao = _selecionar_enum("Identificacao", list(TipoIdentificacao))
 
-	descricao = input("Descricao: ").strip()
+	descricao = input("Descricao (minimo 10 caracteres): ").strip()
 	localizacao = input("Localizacao/Bairro: ").strip()
-	anexo = input("Anexo (opcional): ").strip() or None
 
 	cidadao = None
 	if identificacao == TipoIdentificacao.IDENTIFICADO:
@@ -57,7 +56,6 @@ def _cadastrar_solicitacao(servico: ServicoSolicitacoes):
 			identificacao=identificacao,
 			prioridade=prioridade,
 			cidadao=cidadao,
-			anexo=anexo,
 		)
 		sucesso(f"Solicitacao criada. Protocolo: {solicitacao.protocolo}")
 		info(f"Prazo alvo: {solicitacao.calcular_prazo_alvo()}")
