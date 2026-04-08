@@ -1,17 +1,28 @@
 from Models.categoria import TipoCategoria
 from Models.solicitacao import Prioridade
-from AEP.Enums.status import StatusSolicitacao
+from Enums.status import StatusSolicitacao
 from Models.usuario import Usuario
 from Services.servico_solicitacoes import ServicoSolicitacoes
+from UI.terminal_ui import (
+	alerta,
+	erro,
+	ler_opcao,
+	menu_opcoes,
+	selecionar_indice,
+	sucesso,
+	titulo,
+)
 
 
 def menu_atendente(servico: ServicoSolicitacoes, atendente: Usuario):
 	while True:
-		print("\n--- MENU ATENDENTE/GESTOR ---")
-		print("1. Listar demandas")
-		print("2. Atualizar status")
-		print("0. Voltar")
-		opcao = input("Escolha: ").strip()
+		titulo("Menu Atendente/Gestor")
+		menu_opcoes([
+			"1. Listar demandas",
+			"2. Atualizar status",
+			"0. Voltar",
+		])
+		opcao = ler_opcao()
 
 		if opcao == "1":
 			_listar_demandas(servico)
@@ -20,7 +31,7 @@ def menu_atendente(servico: ServicoSolicitacoes, atendente: Usuario):
 		elif opcao == "0":
 			return
 		else:
-			print("Opcao invalida.")
+			alerta("Opcao invalida.")
 
 
 def _listar_demandas(servico: ServicoSolicitacoes):
@@ -30,7 +41,7 @@ def _listar_demandas(servico: ServicoSolicitacoes):
 
 	demandas = servico.listar_demandas(prioridade=prioridade, bairro=bairro, categoria=categoria)
 	if not demandas:
-		print("Nenhuma demanda encontrada.")
+		alerta("Nenhuma demanda encontrada.")
 		return
 
 	for d in demandas:
@@ -54,9 +65,9 @@ def _atualizar_status(servico: ServicoSolicitacoes, atendente: Usuario):
 			comentario=comentario,
 			justificativa_atraso=justificativa,
 		)
-		print(f"Status atualizado para {solicitacao.status.value}.")
+		sucesso(f"Status atualizado para {solicitacao.status.value}.")
 	except ValueError as exc:
-		print(f"Erro: {exc}")
+		erro(str(exc))
 
 
 def _filtro_prioridade():
@@ -64,8 +75,11 @@ def _filtro_prioridade():
 	opcoes = list(Prioridade)
 	for i, p in enumerate(opcoes, start=1):
 		print(f"{i}. {p.value}")
-	escolha = input("Escolha: ").strip()
+	escolha = ler_opcao()
 	if escolha == "0" or not escolha:
+		return None
+	if not escolha.isdigit() or int(escolha) < 1 or int(escolha) > len(opcoes):
+		alerta("Filtro invalido. Nenhum filtro sera aplicado.")
 		return None
 	return opcoes[int(escolha) - 1]
 
@@ -75,8 +89,11 @@ def _filtro_categoria():
 	opcoes = list(TipoCategoria)
 	for i, c in enumerate(opcoes, start=1):
 		print(f"{i}. {c.value}")
-	escolha = input("Escolha: ").strip()
+	escolha = ler_opcao()
 	if escolha == "0" or not escolha:
+		return None
+	if not escolha.isdigit() or int(escolha) < 1 or int(escolha) > len(opcoes):
+		alerta("Filtro invalido. Nenhum filtro sera aplicado.")
 		return None
 	return opcoes[int(escolha) - 1]
 
@@ -86,5 +103,5 @@ def _selecionar_status() -> StatusSolicitacao:
 	opcoes = list(StatusSolicitacao)
 	for i, status in enumerate(opcoes, start=1):
 		print(f"{i}. {status.value}")
-	escolha = int(input("Escolha: ").strip())
+	escolha = selecionar_indice(len(opcoes))
 	return opcoes[escolha - 1]

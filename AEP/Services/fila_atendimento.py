@@ -1,6 +1,6 @@
 from Services.servico_solicitacoes import ServicoSolicitacoes
 from Models.solicitacao import Solicitacao
-from AEP.Enums.status import StatusSolicitacao
+from Enums.status import StatusSolicitacao
 
 
 class FilaAtendimento:

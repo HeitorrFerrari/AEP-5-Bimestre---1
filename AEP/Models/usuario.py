@@ -1,4 +1,4 @@
-from AEP.Enums.cargo import Cargo
+from Enums.cargo import Cargo
 
 class Usuario:
 	def __init__(self, nome: str, documento: str, cargo: Cargo = Cargo.CIDADAO):

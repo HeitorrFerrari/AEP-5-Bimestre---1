@@ -2,15 +2,27 @@ from Models.categoria import TipoCategoria, TipoIdentificacao
 from Models.solicitacao import Prioridade
 from Models.usuario import Cargo, Usuario
 from Services.servico_solicitacoes import ServicoSolicitacoes
+from UI.terminal_ui import (
+	alerta,
+	erro,
+	info,
+	ler_opcao,
+	menu_opcoes,
+	selecionar_indice,
+	sucesso,
+	titulo,
+)
 
 
 def menu_cidadao(servico: ServicoSolicitacoes):
 	while True:
-		print("\n--- MENU CIDADAO ---")
-		print("1. Nova solicitacao")
-		print("2. Acompanhar por protocolo")
-		print("0. Voltar")
-		opcao = input("Escolha: ").strip()
+		titulo("Menu do Cidadao")
+		menu_opcoes([
+			"1. Nova solicitacao",
+			"2. Acompanhar por protocolo",
+			"0. Voltar",
+		])
+		opcao = ler_opcao()
 
 		if opcao == "1":
 			_cadastrar_solicitacao(servico)
@@ -19,7 +31,7 @@ def menu_cidadao(servico: ServicoSolicitacoes):
 		elif opcao == "0":
 			return
 		else:
-			print("Opcao invalida.")
+			alerta("Opcao invalida.")
 
 
 def _cadastrar_solicitacao(servico: ServicoSolicitacoes):
@@ -47,17 +59,17 @@ def _cadastrar_solicitacao(servico: ServicoSolicitacoes):
 			cidadao=cidadao,
 			anexo=anexo,
 		)
-		print(f"Solicitacao criada. Protocolo: {solicitacao.protocolo}")
-		print(f"Prazo alvo: {solicitacao.calcular_prazo_alvo()}")
+		sucesso(f"Solicitacao criada. Protocolo: {solicitacao.protocolo}")
+		info(f"Prazo alvo: {solicitacao.calcular_prazo_alvo()}")
 	except ValueError as exc:
-		print(f"Erro: {exc}")
+		erro(str(exc))
 
 
 def _acompanhar(servico: ServicoSolicitacoes):
 	protocolo = input("Informe o protocolo: ").strip()
 	solicitacao = servico.buscar_por_protocolo(protocolo)
 	if not solicitacao:
-		print("Protocolo nao encontrado.")
+		alerta("Protocolo nao encontrado.")
 		return
 
 	print(f"Status: {solicitacao.status}")
@@ -70,7 +82,7 @@ def _acompanhar(servico: ServicoSolicitacoes):
 
 	print("Historico:")
 	if not solicitacao.historico:
-		print("  Sem movimentacoes ainda.")
+		info("Sem movimentacoes ainda.")
 		return
 
 	for mov in solicitacao.historico:
@@ -82,5 +94,5 @@ def _selecionar_enum(titulo: str, opcoes: list):
 	for i, item in enumerate(opcoes, start=1):
 		valor = item.value if hasattr(item, "value") else str(item)
 		print(f"{i}. {valor}")
-	indice = int(input("Escolha: ").strip())
+	indice = selecionar_indice(len(opcoes))
 	return opcoes[indice - 1]

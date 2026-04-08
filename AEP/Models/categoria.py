@@ -1,4 +1,4 @@
-from AEP.Enums.tipoCategoria import TipoCategoria
+from Enums.tipoCategoria import TipoCategoria
 from Enums.tipoIdentificação import TipoIdentificacao
 
 

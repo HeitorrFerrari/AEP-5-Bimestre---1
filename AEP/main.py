@@ -2,9 +2,11 @@ from Models.usuario import Cargo, Usuario
 from Services.servico_solicitacoes import ServicoSolicitacoes
 from UI.menu_atendente import menu_atendente
 from UI.menu_cidadao import menu_cidadao
+from UI.terminal_ui import alerta, habilitar_ansi, ler_opcao, menu_opcoes, titulo
 
 
 def main():
+	habilitar_ansi()
 	servico = ServicoSolicitacoes()
 	atendente = Usuario(
 		nome="Atendente Padrao",
@@ -13,11 +15,13 @@ def main():
 	)
 
 	while True:
-		print("\n=== SISTEMA DE SOLICITACOES URBANAS ===")
-		print("1. Area do cidadao")
-		print("2. Area do atendente/gestor")
-		print("0. Sair")
-		opcao = input("Escolha: ").strip()
+		titulo("Sistema de Solicitacoes Urbanas")
+		menu_opcoes([
+			"1. Area do cidadao",
+			"2. Area do atendente/gestor",
+			"0. Sair",
+		])
+		opcao = ler_opcao()
 
 		if opcao == "1":
 			menu_cidadao(servico)
@@ -27,7 +31,7 @@ def main():
 			print("Encerrando sistema.")
 			break
 		else:
-			print("Opcao invalida.")
+			alerta("Opcao invalida.")
 
 
 if __name__ == "__main__":
